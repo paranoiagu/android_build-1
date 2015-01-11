@@ -21,7 +21,6 @@
 
 PRODUCT_PACKAGES := \
     libfwdlockengine \
-    OpenWnn \
     libWnnEngDic \
     libWnnJpnDic \
     libwnndict \
@@ -32,7 +31,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
     ro.com.android.dateformat=MM-dd-yyyy
 
 # Put en_US first in the list, so make it default.
-PRODUCT_LOCALES := en_US
+PRODUCT_LOCALES := zh_CN
 
 # Include drawables for all densities
 PRODUCT_AAPT_CONFIG := normal hdpi xhdpi xxhdpi

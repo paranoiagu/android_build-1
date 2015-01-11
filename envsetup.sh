@@ -77,7 +77,7 @@ function check_product()
     fi
 
     if (echo -n $1 | grep -q -e "^sm_") ; then
-       SM_BUILD=$(echo -n $1 | sed -e 's/^cm_//g')
+       SM_BUILD=$(echo -n $1 | sed -e 's/^sm_//g')
        export BUILD_NUMBER=$((date +%s%N ; echo $SM_BUILD; hostname) | openssl sha1 | sed -e 's/.*=//g; s/ //g' | cut -c1-10)
     else
        SM_BUILD=
@@ -482,12 +482,12 @@ function add_lunch_combo()
 }
 
 # add the default one here
-add_lunch_combo aosp_arm-eng
-add_lunch_combo aosp_arm64-eng
-add_lunch_combo aosp_mips-eng
-add_lunch_combo aosp_mips64-eng
-add_lunch_combo aosp_x86-eng
-add_lunch_combo aosp_x86_64-eng
+# add_lunch_combo aosp_arm-eng
+# add_lunch_combo aosp_arm64-eng
+# add_lunch_combo aosp_mips-eng
+# add_lunch_combo aosp_mips64-eng
+# add_lunch_combo aosp_x86-eng
+# add_lunch_combo aosp_x86_64-eng
 
 function print_lunch_menu()
 {
