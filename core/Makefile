@@ -1664,7 +1664,7 @@ $(INTERNAL_OTA_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE) $(DISTTOOLS)
 	   $(if $(OEM_OTA_CONFIG), -o $(OEM_OTA_CONFIG)) \
 	   $(BUILT_TARGET_FILES_PACKAGE) $@
 
-SM_TARGET_PACKAGE := $(PRODUCT_OUT)/sm-$(SM_VERSION).zip
+SM_TARGET_PACKAGE := $(PRODUCT_OUT)/$(SM_VERSION).zip
 
 .PHONY: otapackage bacon
 otapackage: $(INTERNAL_OTA_PACKAGE_TARGET)
@@ -1672,6 +1672,16 @@ bacon: otapackage
 	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(SM_TARGET_PACKAGE)
 	$(hide) $(MD5SUM) $(SM_TARGET_PACKAGE) > $(SM_TARGET_PACKAGE).md5sum
 	@echo -e ${CL_CYN}"Package Complete: $(SM_TARGET_PACKAGE)"${CL_RST}
+
+ifeq ($(USE_PREBUILT_CHROMIUM),1)
+ifneq ($(PRODUCT_PREBUILT_WEBVIEWCHROMIUM),yes)
+	@echo "Running Chromium prebuilt setup script..."
+	$(hide) . $(TOPDIR)build/tools/chromium_prebuilt.sh $(TOP)
+endif
+endif
+
+	$(hide) # Create Release, Experimental and Nightly folder Start
+
 
 endif    # recovery_fstab is defined
 endif    # TARGET_NO_KERNEL != true
