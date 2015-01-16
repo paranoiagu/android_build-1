@@ -1682,6 +1682,12 @@ endif
 
 	$(hide) # Create Release, Experimental and Nightly folder Start
 
+ifdef SM_BUILD_PATH
+	$(hide) mkdir -p $(SM_BUILD_PATH)/$(SM_BUILDTYPE)/$(SM_BUILD)/md5
+	$(hide) cp $(SM_TARGET_PACKAGE) $(SM_BUILD_PATH)/$(SM_BUILDTYPE)/$(SM_BUILD)
+	$(hide) cp $(SM_TARGET_PACKAGE).md5sum $(SM_BUILD_PATH)/$(SM_BUILDTYPE)/$(SM_BUILD)/md5
+endif
+	$(hide) # Create Release, Experimental and Nightly folder End
 
 endif    # recovery_fstab is defined
 endif    # TARGET_NO_KERNEL != true
