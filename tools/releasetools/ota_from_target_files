@@ -603,7 +603,7 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   script.AppendExtra("endif;")
 
   builddate = GetBuildProp("ro.build.date", OPTIONS.info_dict);
-  releasetype = GetBuildProp("ro.nameless.releasetype", OPTIONS.info_dict);
+  releasetype = GetBuildProp("ro.sm.releasetype", OPTIONS.info_dict);
 
   if OPTIONS.override_prop:
     product = GetBuildProp("ro.build.product", OPTIONS.info_dict);
@@ -644,7 +644,7 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
     script.FormatPartition("/system")
     script.Mount("/system", recovery_mount_options)
     if not has_recovery_patch:
-    script.UnpackPackageDir("recovery", "/system")
+      script.UnpackPackageDir("recovery", "/system")
     script.Print("{*} Extracting /system")
     script.UnpackPackageDir("system", "/system")
     symlinks = CopyPartitionFiles(system_items, input_zip, output_zip)
@@ -703,7 +703,7 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   script.ShowProgress(0.05, 5)
   script.WriteRawImage("/boot", "boot.img")
 
-  script.Print("{+} Enjoy SudaMod!")
+  script.Print("{*} Enjoy SudaMod!")
   script.ShowProgress(0.2, 10)
   device_specific.FullOTA_InstallEnd()
 
