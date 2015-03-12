@@ -1186,12 +1186,12 @@ def WriteIncrementalOTAPackage(input_zip, source_zip, output_zip):
     target_fp = CalculateFingerprint(oem_props, oem_dict, OPTIONS.target_info_dict)
     source_fp = CalculateFingerprint(oem_props, oem_dict, OPTIONS.source_info_dict)
 
-    if oem_props is None:
-      script.AssertSomeFingerprint(source_fp, target_fp)
-    else:
-      script.AssertSomeThumbprint(
-          GetBuildProp("ro.build.thumbprint", OPTIONS.target_info_dict),
-          GetBuildProp("ro.build.thumbprint", OPTIONS.source_info_dict))
+    #if oem_props is None:
+    #  script.AssertSomeFingerprint(source_fp, target_fp)
+    #else:
+    #  script.AssertSomeThumbprint(
+    #      GetBuildProp("ro.build.thumbprint", OPTIONS.target_info_dict),
+    #      GetBuildProp("ro.build.thumbprint", OPTIONS.source_info_dict))
 
     metadata["pre-build"] = source_fp
     metadata["post-build"] = target_fp
@@ -1217,8 +1217,8 @@ def WriteIncrementalOTAPackage(input_zip, source_zip, output_zip):
   #  0.1 for unpacking verbatim files, symlinking, and doing the
   #      device-specific commands.
 
-  AppendAssertions(script, OPTIONS.target_info_dict, oem_dict)
-  device_specific.IncrementalOTA_Assertions()
+  #AppendAssertions(script, OPTIONS.target_info_dict, oem_dict)
+  #device_specific.IncrementalOTA_Assertions()
 
   # Two-step incremental package strategy (in chronological order,
   # which is *not* the order in which the generated script has
@@ -1352,7 +1352,7 @@ else
   if vendor_diff:
     vendor_items = ItemSet("vendor", "META/vendor_filesystem_config.txt")
 
-  if updating_recovery:
+  #if updating_recovery:
     # Recovery is generated as a patch using both the boot image
     # (which contains the same linux kernel as recovery) and the file
     # /system/etc/recovery-resource.dat (which contains all the images
@@ -1362,18 +1362,18 @@ else
     # For older builds where recovery-resource.dat is not present, we
     # use only the boot image as the source.
 
-    if not target_has_recovery_patch:
-      def output_sink(fn, data):
-        common.ZipWriteStr(output_zip, "recovery/" + fn, data)
-        system_items.Get("system/" + fn, dir=False)
+  #  if not target_has_recovery_patch:
+  #    def output_sink(fn, data):
+  #      common.ZipWriteStr(output_zip, "recovery/" + fn, data)
+  #      system_items.Get("system/" + fn, dir=False)
 
-      common.MakeRecoveryPatch(OPTIONS.target_tmp, output_sink,
-                               target_recovery, target_boot)
-      script.DeleteFiles(["/system/recovery-from-boot.p",
-                          "/system/etc/install-recovery.sh"])
-    print "recovery image changed; including as patch from boot."
-  else:
-    print "recovery image unchanged; skipping."
+   #   common.MakeRecoveryPatch(OPTIONS.target_tmp, output_sink,
+   #                            target_recovery, target_boot)
+   #   script.DeleteFiles(["/system/recovery-from-boot.p",
+  #                        "/system/etc/install-recovery.sh"])
+   # print "recovery image changed; including as patch from boot."
+  #else:
+ #   print "recovery image unchanged; skipping."
 
   script.ShowProgress(0.1, 10)
 
@@ -1413,9 +1413,9 @@ else
     script.Print("Unpacking new vendor files...")
     script.UnpackPackageDir("vendor", "/vendor")
 
-  if updating_recovery and not target_has_recovery_patch:
-    script.Print("Unpacking new recovery...")
-    script.UnpackPackageDir("recovery", "/system")
+  #if updating_recovery and not target_has_recovery_patch:
+  #  script.Print("Unpacking new recovery...")
+  #  script.UnpackPackageDir("recovery", "/system")
 
   system_diff.EmitRenames(script)
   if vendor_diff:
