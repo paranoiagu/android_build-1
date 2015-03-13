@@ -662,6 +662,7 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
     #common.MakeRecoveryPatch(OPTIONS.input_tmp, output_sink,
     #                         recovery_img, boot_img)
 
+    script.Print("{*} Setting permissions...")
     system_items.GetMetadata(input_zip)
     system_items.Get("system").SetPermissions(script)
 
@@ -699,6 +700,16 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
     if block_based:
       script.Unmount("/system")
 
+  if block_based:
+    script.Print("{*} Flashing SuperSU Zip")
+    common.ZipWriteStr(output_zip, "supersu/supersu.zip",
+                   ""+input_zip.read("SYSTEM/addon.d/UPDATE-SuperSU.zip"))
+    script.Mount("/system")
+    script.FlashSuperSU()
+
+  if block_based:
+    script.Unmount("/system")
+    
   script.Print("{*} Flashing boot.img")
   script.ShowProgress(0.05, 5)
   script.WriteRawImage("/boot", "boot.img")
