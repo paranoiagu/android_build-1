@@ -64,13 +64,13 @@ PROJECTLIST=(android.git
 count=0
 
 function doMerge() {
-		if [ "$Yes" = y ]; then
+	if [ "$Yes" = y ]; then
 		cd $i
-                git pull https://github.com/CyanogenMod/${PROJECTLIST[count]}
-                git commit -a -m"Merge branch into sm-1.0"
-                git push https://github.com/SudaMod/${PROJECTLIST[count]} HEAD:sm-1.0
-                cd $ANDROID_BUILD_TOP
-		fi
+        	git pull https://github.com/CyanogenMod/${PROJECTLIST[count]}
+        	git commit -a -m"Merge branch into sm-1.0"
+        	git push https://github.com/SudaMod/${PROJECTLIST[count]} HEAD:sm-1.0
+        	cd $ANDROID_BUILD_TOP
+	fi
 }
 
 
