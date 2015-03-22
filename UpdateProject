@@ -36,7 +36,6 @@ PROJECTPATH=($ANDROID_BUILD_TOP/android
  $ANDROID_BUILD_TOP/packages/services/Telephony
  $ANDROID_BUILD_TOP/system/core
  $ANDROID_BUILD_TOP/system/extras/su
- $ANDROID_BUILD_TOP/vendor/sm
 )
 
 PROJECTLIST=(android.git
@@ -58,32 +57,35 @@ PROJECTLIST=(android.git
  android_packages_services_Telephony.git
  android_system_core.git
  android_system_extras_su.git
- android_vendor_cm.git
 )
 
 count=0
 
 function doMerge() {
+	read -p "$1,Pull $2 ?[y]" Yes      
 	if [ "$Yes" = y ]; then
-		cd $i
-        	git pull https://github.com/CyanogenMod/${PROJECTLIST[count]}
+		cd $1
+        	git pull https://github.com/CyanogenMod/$2
         	git commit -a -m"Merge branch into sm-1.0"
-        	git push https://github.com/SudaMod/${PROJECTLIST[count]} HEAD:sm-1.0
+        	git push https://github.com/SudaMod/$3 HEAD:sm-1.0
         	cd $ANDROID_BUILD_TOP
 	fi
 }
 
-
+#public
 for i in ${PROJECTPATH[@]}; do
 	if [ ! -d $i ]; then
 	        echo "$i,Did not find the directory!"
 	        exit 1
-        else
-                read -p "$i,Pull ${PROJECTLIST[count]} ?[y]" Yes            
-		doMerge
+        else       
+		doMerge $i ${PROJECTLIST[count]} ${PROJECTLIST[count]}
                 count=`expr $count + 1`;
 	fi
 done
+
+#private
+doMerge $ANDROID_BUILD_TOP/vendor/sm android_vendor_cm.git android_vendor_sm.git
+
 
 
 
