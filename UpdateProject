@@ -66,11 +66,13 @@ function doMerge() {
 	if [ "$Yes" = y ]; then
 		cd $1
         	git pull https://github.com/CyanogenMod/$2
-        	git commit -a -m"Merge branch into sm-1.0"
+        	git commit -a -m "Merge branch into sm-1.0"
         	git push https://github.com/SudaMod/$3 HEAD:sm-1.0
         	cd $ANDROID_BUILD_TOP
 	fi
 }
+
+clear
 
 #public
 for i in ${PROJECTPATH[@]}; do
