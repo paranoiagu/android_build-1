@@ -75,7 +75,7 @@ if [ ! -z "$1" ]; then
 fi
 
 function doName() {
-     PUSHNAME="SudaMod/android"
+     PUSHNAME="SudaMod/android${PROJECTLIST[project]}"
      if [[ "$i" =~ "vendor" ]]; then
           if [[ "$i" =~ "sm" ]]; then
                PULLNAME="CyanogenMod/android${PROJECTLIST[project]}"
