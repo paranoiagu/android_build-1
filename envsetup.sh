@@ -293,7 +293,7 @@ function settitle()
 
 # ProjectControl
 function update() {
-    $ANDROID_BUILD_TOP/build/UpdateProject
+    $ANDROID_BUILD_TOP/build/UpdateProject $1
 }
 
 function check_bash_version()
