@@ -16,7 +16,6 @@
 # limitations under the License.
 #
 
-
 PROJECTPATH=($ANDROID_BUILD_TOP/android
  $ANDROID_BUILD_TOP/build
  $ANDROID_BUILD_TOP/frameworks/base
@@ -36,58 +35,85 @@ PROJECTPATH=($ANDROID_BUILD_TOP/android
  $ANDROID_BUILD_TOP/packages/services/Telephony
  $ANDROID_BUILD_TOP/system/core
  $ANDROID_BUILD_TOP/system/extras/su
+ $ANDROID_BUILD_TOP/vendor/sm
 )
 
-PROJECTLIST=(android.git
- android_build.git
- android_frameworks_base.git
- android_packages_apps_Browser.git
- android_packages_apps_Calendar.git
- android_packages_apps_CellBroadcastReceiver.git
- android_packages_apps_Contacts.git
- android_packages_apps_ContactsCommon.git
- android_packages_apps_DeskClock.git
- android_packages_apps_Dialer.git
- android_packages_apps_Eleven.git
- android_packages_apps_Mms-caf.git
- android_packages_apps_LockClock.git
- android_packages_apps_InCallUI.git
- android_packages_apps_Settings.git
- android_packages_services_Telecomm.git
- android_packages_services_Telephony.git
- android_system_core.git
- android_system_extras_su.git
+PROJECTLIST=(.git # ->android.git
+ _build.git
+ _frameworks_base.git
+ _packages_apps_Browser.git
+ _packages_apps_Calendar.git
+ _packages_apps_CellBroadcastReceiver.git
+ _packages_apps_Contacts.git
+ _packages_apps_ContactsCommon.git
+ _packages_apps_DeskClock.git
+ _packages_apps_Dialer.git
+ _packages_apps_Eleven.git
+ _packages_apps_Mms-caf.git
+ _packages_apps_LockClock.git
+ _packages_apps_InCallUI.git
+ _packages_apps_Settings.git
+ _packages_services_Telecomm.git
+ _packages_services_Telephony.git
+ _system_core.git
+ _system_extras_su.git
+ _vendor_cm.git
 )
 
-count=0
+project=0
+auto=0
 
-function doMerge() {
-	read -p "$1,Pull $2 ?[y]" Yes      
-	if [ "$Yes" = y ]; then
-		cd $1
-        	git pull https://github.com/CyanogenMod/$2
-        	git commit -a -m "Merge branch into sm-1.0"
-        	git push https://github.com/SudaMod/$3 HEAD:sm-1.0
-        	cd $ANDROID_BUILD_TOP
-	fi
+echo -e "\\033[2J"
+
+if [ ! -z "$1" ]; then
+     echo "Start repo sync -j$1, Please wait for a while..."
+     repo sync -j$1
+     read -p "Start to merge ?[y/n]" No
+     if [ "$No" = n ]; then
+          exit 1
+     fi
+fi
+
+function doName() {
+     PUSHNAME="SudaMod/android"
+     if [[ "$i" =~ "vendor" ]]; then
+          [[ "$i" =~ "sm" ]] && PULLNAME="CyanogenMod/android" ||
+            PULLNAME="TheMuppets/proprietary"
+     else
+          PULLNAME="CyanogenMod/android"
+     fi
 }
 
-clear
+function doMerge() {
+     if [ "$Yes" = y ] || [ "$Yes" = "" ]; then
+          cd $i
+          doName
+          echo "$PULLNAME"
+          git pull https://github.com/$PULLNAME${PROJECTLIST[project]} && echo "" || exit 1
+          git commit -a -m"Merge branch into sm-1.0"
+          git push https://github.com/$PUSHNAME${PROJECTLIST[project]} HEAD:sm-1.0 && echo "" || exit 1
+          cd $ANDROID_BUILD_TOP
+     elif [ "$Yes" = e ]; then
+            exit 1
+fi
+}
 
-#public
+read -p "The main code is clean, automatic merging ?[y/n]" Auto
+if [ "$Auto" = y ] || [ "$Auto" = "" ]; then
+     auto=`expr $auto + 1`;
+fi
+
 for i in ${PROJECTPATH[@]}; do
-	if [ ! -d $i ]; then
-	        echo "$i,Did not find the directory!"
-	        exit 1
-        else       
-		doMerge $i ${PROJECTLIST[count]} ${PROJECTLIST[count]}
-                count=`expr $count + 1`;
-	fi
+     if [ ! -d $i ]; then
+	  echo "$i,Did not find the directory!"
+	  exit 1
+     else
+          if [ "$auto" != 0 ]; then
+               yes | read -p "$i,Pull ${PROJECTLIST[project]} ?[y/n/e]" Yes
+          else
+               read -p "$i,Pull ${PROJECTLIST[project]} ?[y/n/e]" Yes
+          fi
+          doMerge
+          project=`expr $project + 1`;
+fi
 done
-
-#private
-doMerge $ANDROID_BUILD_TOP/vendor/sm android_vendor_cm.git android_vendor_sm.git
-
-
-
-
