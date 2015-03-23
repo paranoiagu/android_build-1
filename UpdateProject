@@ -77,10 +77,14 @@ fi
 function doName() {
      PUSHNAME="SudaMod/android"
      if [[ "$i" =~ "vendor" ]]; then
-          [[ "$i" =~ "sm" ]] && PULLNAME="CyanogenMod/android" ||
-            PULLNAME="TheMuppets/proprietary"
+          if [[ "$i" =~ "sm" ]]; then
+               PULLNAME="CyanogenMod/android${PROJECTLIST[project]}"
+               PUSHNAME="SudaMod/android_vendor_sm.git"
+          else
+               PULLNAME="TheMuppets/proprietary${PROJECTLIST[project]}"
+          fi
      else
-          PULLNAME="CyanogenMod/android"
+          PULLNAME="CyanogenMod/android${PROJECTLIST[project]}"
      fi
 }
 
@@ -88,14 +92,13 @@ function doMerge() {
      if [ "$Yes" = y ] || [ "$Yes" = "" ]; then
           cd $i
           doName
-          echo "$PULLNAME"
-          git pull https://github.com/$PULLNAME${PROJECTLIST[project]} && echo "" || exit 1
+          git pull https://github.com/$PULLNAME && echo "" || exit 1
           git commit -a -m"Merge branch into sm-1.0"
-          git push https://github.com/$PUSHNAME${PROJECTLIST[project]} HEAD:sm-1.0 && echo "" || exit 1
+          git push https://github.com/$PUSHNAME HEAD:sm-1.0 && echo "" || exit 1
           cd $ANDROID_BUILD_TOP
      elif [ "$Yes" = e ]; then
             exit 1
-fi
+     fi
 }
 
 read -p "The main code is clean, automatic merging ?[y/n]" Auto
