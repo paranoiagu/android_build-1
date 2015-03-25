@@ -890,7 +890,7 @@ ifneq ($(OTA_PACKAGE_SIGNING_KEY),)
 else
     PRODUCT_EXTRA_RECOVERY_KEYS += \
         build/target/product/security/sm \
-        build/target/product/security/sm-devkey
+        build/target/product/security/sm-devkey \
         build/target/product/security/bacon
 endif
 
