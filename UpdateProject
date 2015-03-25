@@ -92,7 +92,7 @@ function doMerge() {
      if [ "$Yes" = y ] || [ "$Yes" = "" ]; then
           cd $i
           doName
-          git pull https://github.com/$PULLNAME && echo "" || exit 1
+	  git fetch https://github.com/$PULLNAME  && echo "" || exit 1
           git commit -a -m"Merge branch into sm-1.0"
           git push https://github.com/$PUSHNAME HEAD:sm-1.0 && echo "" || exit 1
           cd $ANDROID_BUILD_TOP
