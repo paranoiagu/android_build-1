@@ -291,6 +291,11 @@ function settitle()
     fi
 }
 
+# ProjectControl
+function update() {
+    $ANDROID_BUILD_TOP/build/UpdateProject $1
+}
+
 function check_bash_version()
 {
     # Keep us from trying to run in something that isn't bash.
