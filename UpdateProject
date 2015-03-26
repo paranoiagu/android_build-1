@@ -94,7 +94,7 @@ function doMerge() {
           doName
 	  git pull https://github.com/$PULLNAME staging/cm-12.1 && echo "" || exit 1
           git commit -a -m"Merge branch 'staging/cm-12.1' into sm-1.1"
-          git push https://github.com/$PUSHNAME HEAD:sm-1.0 && echo "" || exit 1
+          git push https://github.com/$PUSHNAME HEAD:sm-1.1 && echo "" || exit 1
           cd $ANDROID_BUILD_TOP
      elif [ "$Yes" = e ]; then
             exit 1
