@@ -484,6 +484,12 @@ def CopyInstallTools(output_zip):
       install_target = os.path.join("install", os.path.relpath(root, install_path), f)
       output_zip.write(install_source, install_target)
 
+  supersu_path = os.path.join(OPTIONS.input_tmp, "SUPERSU")
+  for root, subdirs, files in os.walk(supersu_path):
+    for f in files:
+      supersu_source = os.path.join(root, f)
+      supersu_target = os.path.join("supersu", os.path.relpath(root, supersu_path), f)
+      output_zip.write(supersu_source, supersu_target)
 
 def WriteFullOTAPackage(input_zip, output_zip):
   # TODO: how to determine this?  We don't know what version it will
@@ -630,6 +636,7 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
 
   system_items = ItemSet("system", "META/filesystem_config.txt")
   script.ShowProgress(system_progress, 0)
+
   if block_based:
     # Full OTA is done as an "incremental" against an empty source
     # image.  This has the effect of writing new data from the package
@@ -702,10 +709,9 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
 
   if block_based:
     script.Print("{*} Flashing SuperSU Zip")
-    common.ZipWriteStr(output_zip, "supersu/supersu.zip",
-                   ""+input_zip.read("SYSTEM/addon.d/UPDATE-SuperSU.zip"))
-    script.Mount("/system")
-    script.FlashSuperSU()
+    script.UnpackPackageDir("supersu", "/tmp/supersu");
+    script.AppendExtra("""run_program("/sbin/busybox", "unzip", "/tmp/supersu/UPDATE-SuperSU.zip", "META-INF/com/google/android/*", "-d", "/tmp/supersu");""");
+    script.AppendExtra("""run_program("/sbin/busybox", "sh", "/tmp/supersu/META-INF/com/google/android/update-binary", "dummy", "1", "/tmp/supersu/UPDATE-SuperSU.zip");""");
 
   if block_based:
     script.Unmount("/system")
