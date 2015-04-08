@@ -116,7 +116,7 @@ for i in ${PROJECTPATH[@]}; do
           if [ "$auto" != 0 ]; then
                yes | read -p "$i,Pull android${PROJECTLIST[project]} ?[y/n/e]" Yes
           else
-               read -p "$i,Pull android_${PROJECTLIST[project]} ?[y/n/e]" Yes
+               read -p "$i,Pull android${PROJECTLIST[project]} ?[y/n/e]" Yes
           fi
           doMerge
           project=`expr $project + 1`;
