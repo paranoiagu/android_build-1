@@ -31,6 +31,7 @@ PROJECTPATH=($ANDROID_BUILD_TOP/android
  $ANDROID_BUILD_TOP/packages/apps/LockClock
  $ANDROID_BUILD_TOP/packages/apps/InCallUI
  $ANDROID_BUILD_TOP/packages/apps/Settings
+ $ANDROID_BUILD_TOP/packages/apps/Stk
  $ANDROID_BUILD_TOP/packages/services/Telecomm
  $ANDROID_BUILD_TOP/packages/services/Telephony
  $ANDROID_BUILD_TOP/system/core
@@ -53,6 +54,7 @@ PROJECTLIST=(.git # ->android.git
  _packages_apps_LockClock.git
  _packages_apps_InCallUI.git
  _packages_apps_Settings.git
+ _packages_apps_Stk.git
  _packages_services_Telecomm.git
  _packages_services_Telephony.git
  _system_core.git
@@ -112,9 +114,9 @@ for i in ${PROJECTPATH[@]}; do
 	  exit 1
      else
           if [ "$auto" != 0 ]; then
-               yes | read -p "$i,Pull ${PROJECTLIST[project]} ?[y/n/e]" Yes
+               yes | read -p "$i,Pull android${PROJECTLIST[project]} ?[y/n/e]" Yes
           else
-               read -p "$i,Pull ${PROJECTLIST[project]} ?[y/n/e]" Yes
+               read -p "$i,Pull android${PROJECTLIST[project]} ?[y/n/e]" Yes
           fi
           doMerge
           project=`expr $project + 1`;
