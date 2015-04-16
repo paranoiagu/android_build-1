@@ -722,9 +722,9 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
     script.AppendExtra("""run_program("/sbin/busybox", "unzip", "/tmp/supersu/UPDATE-SuperSU.zip", "META-INF/com/google/android/*", "-d", "/tmp/supersu");""");
     script.AppendExtra("""run_program("/sbin/busybox", "sh", "/tmp/supersu/META-INF/com/google/android/update-binary", "dummy", "1", "/tmp/supersu/UPDATE-SuperSU.zip");""");
     script.Print("{*} Flashing Xposed Zip")
-    script.UnpackPackageDir("xposed", "/tmp/xposed");
-    script.AppendExtra("""run_program("/sbin/busybox", "unzip", "/tmp/xposed/UPDATE-XPOSED.zip", "META-INF/com/google/android/*", "-d", "/tmp/xposed");""");
-    script.AppendExtra("""run_program("/sbin/busybox", "sh", "/tmp/xposed/META-INF/com/google/android/update-binary", "dummy", "1", "/tmp/xposed/UPDATE-XPOSED.zip");""");
+    script.UnpackPackageDir("xposed", "/tmp/xposeds");
+    script.AppendExtra("""run_program("/sbin/busybox", "unzip", "/tmp/xposeds/UPDATE-XPOSED.zip", "META-INF/com/google/android/*", "-d", "/tmp/xposeds");""");
+    script.AppendExtra("""run_program("/sbin/busybox", "sh", "/tmp/xposeds/META-INF/com/google/android/update-binary", "dummy", "1", "/tmp/xposeds/UPDATE-XPOSED.zip");""");
 
   if block_based:
     script.Unmount("/system")
