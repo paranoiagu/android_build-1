@@ -714,17 +714,12 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
     script.RunBackup("restore")
     if block_based:
       script.Unmount("/system")
-
-
-  if block_based:
-    script.Unmount("/system")
     
   script.Print("{*} Flashing boot.img")
   script.ShowProgress(0.05, 5)
   script.WriteRawImage("/boot", "boot.img")
 
   script.Print("{*} Flashing SuperSU Zip")
-  script.Mount("/system")
   script.UnpackPackageDir("supersu", "/tmp/supersu");
   script.AppendExtra("""run_program("/sbin/busybox", "unzip", "/tmp/supersu/UPDATE-SuperSU.zip", "META-INF/com/google/android/*", "-d", "/tmp/supersu");""");
   script.AppendExtra("""run_program("/sbin/busybox", "sh", "/tmp/supersu/META-INF/com/google/android/update-binary", "dummy", "1", "/tmp/supersu/UPDATE-SuperSU.zip");""");
