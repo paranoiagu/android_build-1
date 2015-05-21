@@ -1490,6 +1490,8 @@ $(BUILT_TARGET_FILES_PACKAGE): \
 	$(hide) $(call package_files-copy-root, $(OUT)/install, $(zip_root)/INSTALL)
 	@# SuperSU
 	$(hide) $(call package_files-copy-root, $(OUT)/supersu, $(zip_root)/SUPERSU)
+	@# Xposed
+	$(hide) $(call package_files-copy-root, $(OUT)/xposed, $(zip_root)/XPOSED)
 ifdef INSTALLED_KERNEL_TARGET
 	$(hide) $(ACP) $(INSTALLED_KERNEL_TARGET) $(zip_root)/RECOVERY/kernel
 endif

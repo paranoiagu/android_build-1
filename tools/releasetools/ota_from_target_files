@@ -491,6 +491,14 @@ def CopyInstallTools(output_zip):
       supersu_target = os.path.join("supersu", os.path.relpath(root, supersu_path), f)
       output_zip.write(supersu_source, supersu_target)
 
+  xposed_path = os.path.join(OPTIONS.input_tmp, "XPOSED")
+  for root, subdirs, files in os.walk(xposed_path):
+    for f in files:
+      xposed_source = os.path.join(root, f)
+      xposed_target = os.path.join("xposed", os.path.relpath(root, xposed_path), f)
+      output_zip.write(xposed_source, xposed_target)
+
+
 def WriteFullOTAPackage(input_zip, output_zip):
   # TODO: how to determine this?  We don't know what version it will
   # be installed on top of.  For now, we expect the API just won't
@@ -715,6 +723,10 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   script.UnpackPackageDir("supersu", "/tmp/supersu");
   script.AppendExtra("""run_program("/sbin/busybox", "unzip", "/tmp/supersu/UPDATE-SuperSU.zip", "META-INF/com/google/android/*", "-d", "/tmp/supersu");""");
   script.AppendExtra("""run_program("/sbin/busybox", "sh", "/tmp/supersu/META-INF/com/google/android/update-binary", "dummy", "1", "/tmp/supersu/UPDATE-SuperSU.zip");""");
+  script.Print("{*} Flashing Xposed Zip")
+  script.UnpackPackageDir("xposed", "/tmp/xposeds");
+  script.AppendExtra("""run_program("/sbin/busybox", "unzip", "/tmp/xposeds/UPDATE-XPOSED.zip", "META-INF/com/google/android/*", "-d", "/tmp/xposeds");""");
+  script.AppendExtra("""run_program("/sbin/busybox", "sh", "/tmp/xposeds/META-INF/com/google/android/update-binary", "dummy", "1", "/tmp/xposeds/UPDATE-XPOSED.zip");""");
 
   script.Print("{*} Enjoy SudaMod!")
   script.ShowProgress(0.2, 10)
