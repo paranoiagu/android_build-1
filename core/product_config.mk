@@ -179,9 +179,8 @@ include $(BUILD_SYSTEM)/node_fns.mk
 include $(BUILD_SYSTEM)/product.mk
 include $(BUILD_SYSTEM)/device.mk
 
-=======
 # A SM build needs only the SM product makefiles.
-ifneq ($(CM_BUILD),)
+ifneq ($(SM_BUILD),)
   all_product_configs := $(shell find device -path "*/$(SM_BUILD)/sm.mk")
 else
   ifneq ($(strip $(TARGET_BUILD_APPS)),)
