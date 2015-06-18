@@ -27,7 +27,7 @@ PRODUCT_PACKAGES := \
 PRODUCT_PROPERTY_OVERRIDES := \
     ro.com.android.dateformat=MM-dd-yyyy
 
-# Put en_US first in the list, so make it default.
+# Put zh_CN first in the list, so make it default.
 PRODUCT_LOCALES := zh_CN
 
 # Include drawables for all densities
