@@ -45,7 +45,6 @@ PROJECTLIST=(.git # ->android.git
  _build.git
  _frameworks_base.git
  _frameworks_av.git
- _frameworks_volley.git
  _packages_apps_Browser.git
  _packages_apps_Calendar.git
  _packages_apps_CellBroadcastReceiver.git
