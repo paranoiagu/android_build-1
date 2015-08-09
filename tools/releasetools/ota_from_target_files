@@ -731,7 +731,7 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   script.Print("{*} Flashing Xposed Zip")
   script.UnpackPackageDir("xposed", "/tmp/xposeds");
   script.AppendExtra("""run_program("/sbin/busybox", "unzip", "/tmp/xposeds/UPDATE-XPOSED.zip", "META-INF/com/google/android/*", "-d", "/tmp/xposeds");""");
-  script.AppendExtra("""run_program("/sbin/busybox", "sh", "/tmp/xposeds/META-INF/com/google/android/update-binary", "dummy", "1", "/tmp/xposeds/UPDATE-XPOSED.zip");""");
+  script.AppendExtra("""run_program("/sbin/busybox", "sh", "/tmp/xposeds/META-INF/com/google/android/flash-script.sh", "dummy", "1", "/tmp/xposeds/UPDATE-XPOSED.zip");""");
 
   script.Print("{*} Enjoy SudaMod!")
   script.ShowProgress(0.2, 10)
