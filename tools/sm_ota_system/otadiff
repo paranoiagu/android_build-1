@@ -3,11 +3,11 @@
 TMP=OTA/tmp/$RANDOM
 
 if [ -z "$BSDIFF" ];then
-	BSDIFF=bsdiff
+	BSDIFF=$ANDROID_BUILD_TOP/build/tools/sm_ota_system/bsdiff
 fi
 
 if [ -z "$IMGDIFF" ];then
-	IMGDIFF=imgdiff
+	IMGDIFF=$ANDROID_BUILD_TOP/build/tools/sm_ota_system/imgdiff
 fi
 
 gen_diff(){
@@ -93,8 +93,8 @@ mv z2/META-INF/com/google/android/update-binary out/META-INF/com/google/android/
 mv z2/META-INF/com/google/android/updater-script oldscript
 rm -rf z1/META-INF
 rm -rf z2/META-INF
-rm z1/system/bin/backuptool.sh
-rm z2/system/bin/backuptool.sh
+rm z1/install/bin/backuptool.sh
+rm z2/install/bin/backuptool.sh
 if [ -f z2/boot.img ];then
 	mv z2/boot.img out/boot.img
 	rm z1/boot.img
@@ -148,13 +148,6 @@ if [ -d z2/system/etc/init.d ];then
 fi
 if [ -d z1/system/etc/init.d ];then
 	rm -R z1/system/etc/init.d
-fi
-
-# Device specific pre-processing
-if [ ! -z "$DEVICE_TREE" ];then
-	if [ -f $DEVICE_TREE/ota_preprocess.mokee ];then
-		. $DEVICE_TREE/ota_preprocess.mokee
-	fi
 fi
 
 # Generate file list to be removed
@@ -264,13 +257,6 @@ cat oldscript | grep "package_extract_file(\"boot.img\"" >> updater-script
 cat oldscript | grep "write_raw_image(" >> updater-script
 cat oldscript | grep "delete(\"/tmp/boot.img\")"  >> updater-script
 echo "" >> updater-script
-# Device specific post-processing
-if [ ! -z "$DEVICE_TREE" ];then
-	if [ -f $DEVICE_TREE/ota_postprocess.mokee ];then
-		. $DEVICE_TREE/ota_postprocess.mokee
-		echo "" >> updater-script
-	fi
-fi
 # Clean up
 echo "ui_print(\"Cleaning up...\");" >> updater-script
 echo "show_progress(0.100000,0);" >> updater-script
