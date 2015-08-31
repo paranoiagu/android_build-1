@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-TMP=OTA/tmp/$RANDOM
+TMP=$ANDROID_BUILD_TOP/tmp/$RANDOM
 
 if [ -z "$BSDIFF" ];then
 	BSDIFF=$ANDROID_BUILD_TOP/build/tools/sm_ota_system/bsdiff
@@ -210,6 +210,9 @@ cd ..
 # Generating updater-script
 OLDVERSION=$(cat z1/system/build.prop | grep "ro\.modversion" | sed "s/ //g" | cut -d"=" -f2)
 NEWVERSION=$(cat z2/system/build.prop | grep "ro\.modversion" | sed "s/ //g" | cut -d"=" -f2)
+echo "ui_print(\"Updating from ${OLDVERSION}\");" >> updater-script
+echo "ui_print(\"to ${NEWVERSION} for your device.\");" >> updater-script
+echo "ui_print(\"It may take several minutes, please be patient.\");" >> updater-script
 # Mount file system
 OLD_IFS=$IFS
 IFS=$'\n'
