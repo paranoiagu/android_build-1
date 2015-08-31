@@ -32,6 +32,7 @@ Invoke ". build/envsetup.sh" from your shell to add the following functions to y
 - repopick: Utility to fetch changes from Gerrit.
 - installboot: Installs a boot.img to the connected device.
 - installrecovery: Installs a recovery.img to the connected device.
+- mota:  Generate OTA packages.
 
 Look at the source to view more functions. The complete list is:
 EOF
@@ -2724,6 +2725,11 @@ do
     . $f
 done
 unset f
+
+# OTA Script
+function mota() {
+    $ANDROID_BUILD_TOP/build/tools/sm_ota_system/otadiff $1 $2 $3
+}
 
 # Add completions
 check_bash_version && {
