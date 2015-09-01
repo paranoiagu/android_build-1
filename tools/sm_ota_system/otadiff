@@ -121,6 +121,23 @@ if [ -f z2/boot.img ];then
 	rm z1/boot.img
 fi
 
+#Rename app_process Because we use SuperSu
+if [ -f z1/system/bin/app_process32 ];then
+	mv z1/system/bin/app_process32 z1/system/bin/app_process32_original
+fi
+
+if [ -f z2/system/bin/app_process32 ];then
+	mv z2/system/bin/app_process32 z2/system/bin/app_process32_original
+fi
+
+if [ -f z1/system/bin/app_process64 ];then
+	mv z1/system/bin/app_process64 z1/system/bin/app_process64_original
+fi
+
+if [ -f z2/system/bin/app_process64 ];then
+	mv z2/system/bin/app_process64 z2/system/bin/app_process64_original
+fi
+
 # Don't change some customizable files
 if [ -f z2/system/bin/bootmenu ] && [ -f z2/system/bin/logwrapper ];then
 	mv z2/system/bin/logwrapper out/
