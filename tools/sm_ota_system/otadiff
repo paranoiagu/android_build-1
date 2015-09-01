@@ -19,6 +19,8 @@
 
 TMP=$ANDROID_BUILD_TOP/tmp/$RANDOM
 
+export EXCLUDE_CHECK_MAIN="su"
+
 if [ -z "$BSDIFF" ];then
 	BSDIFF=$ANDROID_BUILD_TOP/build/tools/sm_ota_system/bsdiff
 fi
@@ -46,11 +48,13 @@ if [ -f $EQUIV ];then
 			echo "bsdiff: $1"
 			$BSDIFF $1 $EQUIV ${OUTFILE}.p
 		fi
+		if ! echo $EXCLUDE_CHECK_MAIN | grep -q $filename;then
+			echo "$file" | grep 'recovery' > /dev/null 2>&1
+			if [ $? -eq 1 ]; then
+				echo "apply_patch_check(\"$file\", \"$newsha1\",\"$oldsha1\") || abort(\"$file has unexpected contents.\");" >> ../checkpatch.txt
+			fi
+		fi
 		echo "apply_patch(\"$file\", \"-\", $newsha1, $newsize, $oldsha1, package_extract_file(\"patch${file}.p\"));" >> ../applypatch.txt
-                echo "$file" | grep 'recovery' > /dev/null 2>&1
-                if [ $? -eq 1 ]; then
-                echo "apply_patch_check(\"$file\", \"$newsha1\",\"$oldsha1\") || abort(\"$file has unexpected contents.\");" >> ../checkpatch.txt
-                fi
 	fi
 fi
 }
