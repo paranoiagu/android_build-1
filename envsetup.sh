@@ -157,8 +157,8 @@ function setpaths()
         x86_64) toolchaindir=x86/x86_64-linux-android-$targetgccversion/bin
             ;;
         arm)
-            if [ "$(uname)" = "Linux" ] && [ -n "$(get_build_var MK_TOOLCHAIN_VARIANT)" ]; then
-                toolchaindir=arm/$(get_build_var MK_TOOLCHAIN_VARIANT)-arm-linux-androideabi-$targetgccversion/bin
+            if [ "$(uname)" = "Linux" ] && [ -n "$(get_build_var SM_TOOLCHAIN_VARIANT)" ]; then
+                toolchaindir=arm/$(get_build_var SM_TOOLCHAIN_VARIANT)-arm-linux-androideabi-$targetgccversion/bin
             else
                 toolchaindir=arm/arm-linux-androideabi-$targetgccversion/bin
             fi
@@ -185,8 +185,8 @@ function setpaths()
     case $ARCH in
         arm)
             # Legacy toolchain configuration used for ARM kernel compilation
-            if [ "$(uname)" = "Linux" ] && [ -n "$(get_build_var MK_TOOLCHAIN_VARIANT)" ]; then
-                toolchaindir=arm/$(get_build_var MK_TOOLCHAIN_VARIANT)-arm-eabi-$targetgccversion/bin
+            if [ "$(uname)" = "Linux" ] && [ -n "$(get_build_var SM_TOOLCHAIN_VARIANT)" ]; then
+                toolchaindir=arm/$(get_build_var SM_TOOLCHAIN_VARIANT)-arm-eabi-$targetgccversion/bin
             else
                 toolchaindir=arm/arm-eabi-$targetgccversion/bin
             fi
