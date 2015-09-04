@@ -123,7 +123,7 @@ fi
 
 #Rename app_process Because we use SuperSu
 if [ -f z1/system/bin/app_process32 ];then
-	mv z1/system/bin/app_process32 z1/system/bin/app_process32_original
+	rm z1/system/bin/app_process32
 fi
 
 if [ -f z2/system/bin/app_process32 ];then
@@ -131,7 +131,7 @@ if [ -f z2/system/bin/app_process32 ];then
 fi
 
 if [ -f z1/system/bin/app_process64 ];then
-	mv z1/system/bin/app_process64 z1/system/bin/app_process64_original
+	rm z1/system/bin/app_process64
 fi
 
 if [ -f z2/system/bin/app_process64 ];then
