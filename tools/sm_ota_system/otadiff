@@ -286,13 +286,12 @@ echo "" >> updater-script
 # Symlinks
 echo "ui_print(\"Creating symlinks...\");" >> updater-script
 for x in `cat oldscript`; do
-	if echo $x | grep symlink;then
-		echo $x";" >> updater-script
+	if echo $x | grep symlink >> tmp;then
+		echo $x";" | grep -v '^$' >> updater-script
 	fi
 done
 IFS=$OLD_IFS
 
-echo "" >> updater-script
 # Permissions
 if cat oldscript | grep set_perm | grep -v backuptool | grep -vq tmp;then
 	echo "ui_print(\"Setting permissions...\");" >> updater-script
@@ -316,7 +315,6 @@ IFS=$OLD_IFS
 # xposed
 echo "ifelse(run_program(\"/sbin/test\", \"-f\", \"/system/bin/app_process32_xposed\") == 0, (set_metadata(\"/system/bin/app_process32_xposed\", \"uid\", 0, \"gid\", 2000, \"mode\", 0755, \"capabilities\", 0x0, \"selabel\", \"u:object_r:zygote_exec:s0\");set_metadata(\"/system/bin/app_process32_original\", \"uid\", 0, \"gid\", 2000, \"mode\", 0755, \"capabilities\", 0x0, \"selabel\", \"u:object_r:zygote_exec:s0\");set_metadata(\"/system/bin/app_process32\", \"uid\", 0, \"gid\", 2000, \"mode\", 0755, \"capabilities\", 0x0, \"selabel\", \"u:object_r:system_file:s0\")));" >> updater-script
 echo "ifelse(run_program(\"/sbin/test\", \"-f\", \"/system/bin/app_process64_xposed\") == 0, (set_metadata(\"/system/bin/app_process64_xposed\", \"uid\", 0, \"gid\", 2000, \"mode\", 0755, \"capabilities\", 0x0, \"selabel\", \"u:object_r:zygote_exec:s0\");set_metadata(\"/system/bin/app_process64_original\", \"uid\", 0, \"gid\", 2000, \"mode\", 0755, \"capabilities\", 0x0, \"selabel\", \"u:object_r:zygote_exec:s0\");set_metadata(\"/system/bin/app_process64\", \"uid\", 0, \"gid\", 2000, \"mode\", 0755, \"capabilities\", 0x0, \"selabel\", \"u:object_r:system_file:s0\")));" >> updater-script
-echo "" >> updater-script
 
 # Flash kernel
 echo "ui_print(\"Flashing kernel...\");" >> updater-script
