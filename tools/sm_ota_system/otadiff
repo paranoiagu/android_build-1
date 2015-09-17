@@ -128,6 +128,8 @@ if [ -f z2/boot.img ];then
 	rm z1/boot.img
 fi
 
+rm z1/system/xbin/zip
+
 #Rename app_process Because we use SuperSu
 if [ -f z1/system/bin/app_process32 ];then
 	rm z1/system/bin/app_process32
