@@ -306,11 +306,6 @@ function settitle()
     fi
 }
 
-# ProjectControl
-function update() {
-    $ANDROID_BUILD_TOP/build/UpdateProject $1
-}
-
 function check_bash_version()
 {
     # Keep us from trying to run in something that isn't bash.
@@ -2676,16 +2671,15 @@ function mk_timer()
     return $ret
 }
 
-function chromium_prebuilt() {
-    T=$(gettop)
-    hash1=$T/prebuilts/chromium/$SM_BUILD/hash_chromium.txt
-    hash2=$T/prebuilts/chromium/$SM_BUILD/hash_webview.txt
-
 function make()
 {
     mk_timer $(get_make_command) "$@"
 }
 
+function chromium_prebuilt() {
+    T=$(gettop)
+    hash1=$T/prebuilts/chromium/$SM_BUILD/hash_chromium.txt
+    hash2=$T/prebuilts/chromium/$SM_BUILD/hash_webview.txt
 
     if [ -r $hash1 ] && [ -r $hash2 ] && [ $(git --git-dir=$T/external/chromium_org/.git --work-tree=$T/external/chromium_org rev-parse --verify HEAD) == $(cat $hash1) ] &&
     [ $(git --git-dir=$T/frameworks/webview/.git --work-tree=$T/frameworks/webview rev-parse --verify HEAD) == $(cat $hash2) ]; then
@@ -2721,6 +2715,11 @@ unset f
 # OTA Script
 function mota() {
     $ANDROID_BUILD_TOP/build/tools/sm_ota_system/otadiff $1 $2 $3
+}
+
+# ProjectControl
+function update() {
+    $ANDROID_BUILD_TOP/build/UpdateProject $1
 }
 
 # Add completions
