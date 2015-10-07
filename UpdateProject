@@ -1,0 +1,128 @@
+#!/bin/bash
+#
+# Copyright (C) 2015 The AmmoniaOS Project
+# Copyright (C) 2015 The SudaMod Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+PROJECTPATH=($ANDROID_BUILD_TOP/android
+ $ANDROID_BUILD_TOP/build
+ $ANDROID_BUILD_TOP/frameworks/base
+ $ANDROID_BUILD_TOP/frameworks/av
+ $ANDROID_BUILD_TOP/packages/apps/Browser
+ $ANDROID_BUILD_TOP/packages/apps/Calendar
+ $ANDROID_BUILD_TOP/packages/apps/CellBroadcastReceiver
+ $ANDROID_BUILD_TOP/packages/apps/Contacts
+ $ANDROID_BUILD_TOP/packages/apps/ContactsCommon
+ $ANDROID_BUILD_TOP/packages/apps/CMFileManager
+ $ANDROID_BUILD_TOP/packages/apps/DeskClock
+ $ANDROID_BUILD_TOP/packages/apps/Dialer
+ $ANDROID_BUILD_TOP/packages/apps/Eleven
+ $ANDROID_BUILD_TOP/packages/apps/Mms
+ $ANDROID_BUILD_TOP/packages/apps/LockClock
+ $ANDROID_BUILD_TOP/packages/apps/InCallUI
+ $ANDROID_BUILD_TOP/packages/apps/Settings
+ $ANDROID_BUILD_TOP/packages/apps/Stk
+ $ANDROID_BUILD_TOP/packages/services/Telecomm
+ $ANDROID_BUILD_TOP/packages/services/Telephony
+ $ANDROID_BUILD_TOP/system/core
+ $ANDROID_BUILD_TOP/system/extras/su
+ $ANDROID_BUILD_TOP/vendor/sm
+)
+
+PROJECTLIST=(.git # ->android.git
+ _build.git
+ _frameworks_base.git
+ _frameworks_av.git
+ _packages_apps_Browser.git
+ _packages_apps_Calendar.git
+ _packages_apps_CellBroadcastReceiver.git
+ _packages_apps_Contacts.git
+ _packages_apps_ContactsCommon.git
+ _packages_apps_CMFileManager.git
+ _packages_apps_DeskClock.git
+ _packages_apps_Dialer.git
+ _packages_apps_Eleven.git
+ _packages_apps_Mms-caf.git
+ _packages_apps_LockClock.git
+ _packages_apps_InCallUI.git
+ _packages_apps_Settings.git
+ _packages_apps_Stk.git
+ _packages_services_Telecomm.git
+ _packages_services_Telephony.git
+ _system_core.git
+ _system_extras_su.git
+ _vendor_cm.git
+)
+
+project=0
+auto=0
+
+echo -e "\\033[2J"
+
+if [ ! -z "$1" ]; then
+     echo "Start repo sync -j$1, Please wait for a while..."
+     repo sync -j$1
+     read -p "Start to merge ?[y/n]" No
+     if [ "$No" = n ]; then
+          exit 1
+     fi
+fi
+
+function doName() {
+     PUSHNAME="SudaMod/android${PROJECTLIST[project]}"
+     if [[ "$i" =~ "vendor" ]]; then
+          if [[ "$i" =~ "sm" ]]; then
+               PULLNAME="CyanogenMod/android${PROJECTLIST[project]}"
+               PUSHNAME="SudaMod/android_vendor_sm.git"
+          else
+               PULLNAME="TheMuppets/proprietary${PROJECTLIST[project]}"
+          fi
+     else
+          PULLNAME="CyanogenMod/android${PROJECTLIST[project]}"
+     fi
+}
+
+function doMerge() {
+     if [ "$Yes" = y ] || [ "$Yes" = "" ]; then
+          cd $i
+          doName
+	  git pull https://github.com/$PULLNAME cm-12.1 && echo "" || exit 1
+          git commit -a -m"Merge branch 'cm-12.1' into sm-1.1"
+          git push https://github.com/$PUSHNAME HEAD:sm-1.1 && echo "" || exit 1
+          cd $ANDROID_BUILD_TOP
+     elif [ "$Yes" = e ]; then
+            exit 1
+     fi
+}
+
+read -p "The main code is clean, automatic merging ?[y/n]" Auto
+if [ "$Auto" = y ] || [ "$Auto" = "" ]; then
+     auto=`expr $auto + 1`;
+fi
+
+for i in ${PROJECTPATH[@]}; do
+     if [ ! -d $i ]; then
+	  echo "$i,Did not find the directory!"
+	  exit 1
+     else
+          if [ "$auto" != 0 ]; then
+               yes | read -p "$i,Pull android${PROJECTLIST[project]} ?[y/n/e]" Yes
+          else
+               read -p "$i,Pull android${PROJECTLIST[project]} ?[y/n/e]" Yes
+          fi
+          doMerge
+          project=`expr $project + 1`;
+fi
+done
