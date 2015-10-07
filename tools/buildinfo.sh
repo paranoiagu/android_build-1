@@ -40,6 +40,9 @@ echo "ro.product.manufacturer=$PRODUCT_MANUFACTURER"
 if [ -n "$PRODUCT_DEFAULT_LOCALE" ] ; then
   echo "ro.product.locale=$PRODUCT_DEFAULT_LOCALE"
 fi
+echo "persist.sys.language=$PRODUCT_DEFAULT_LANGUAGE"
+echo "persist.sys.country=$PRODUCT_DEFAULT_REGION"
+echo "persist.sys.timezone=Asia/Shanghai"
 echo "ro.wifi.channels=$PRODUCT_DEFAULT_WIFI_CHANNELS"
 echo "ro.board.platform=$TARGET_BOARD_PLATFORM"
 
@@ -57,6 +60,6 @@ if [ "$TARGET_UNIFIED_DEVICE" == "" ] ; then
 fi
 echo "ro.build.characteristics=$TARGET_AAPT_CHARACTERISTICS"
 
-echo "ro.cm.device=$CM_DEVICE"
+echo "ro.sm.device=$SM_DEVICE"
 
 echo "# end build properties"
