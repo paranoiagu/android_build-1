@@ -181,7 +181,7 @@ include $(BUILD_SYSTEM)/device.mk
 
 # A SM build needs only the SM product makefiles.
 ifneq ($(SM_BUILD),)
-  all_product_configs := $(shell find device -path "*/$(SM_BUILD)/cm.mk")
+  all_product_configs := $(shell find device -path "*/$(SM_BUILD)/sm.mk")
 else
   ifneq ($(strip $(TARGET_BUILD_APPS)),)
   # An unbundled app build needs only the core product makefiles.
