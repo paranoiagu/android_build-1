@@ -2393,6 +2393,7 @@ function chromium_prebuilt() {
         export PRODUCT_PREBUILT_WEBVIEWCHROMIUM=no
         echo "** Prebuilt Chromium out-of-date/not found; Will build from source **"
     fi
+}
 
 function make()
 {
