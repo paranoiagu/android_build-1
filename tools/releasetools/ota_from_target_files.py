@@ -508,6 +508,12 @@ def CopyInstallTools(output_zip):
       install_target = os.path.join("install", os.path.relpath(root, install_path), f)
       output_zip.write(install_source, install_target)
 
+  supersu_path = os.path.join(OPTIONS.input_tmp, "SUPERSU")
+  for root, subdirs, files in os.walk(supersu_path):
+    for f in files:
+      supersu_source = os.path.join(root, f)
+      supersu_target = os.path.join("supersu", os.path.relpath(root, supersu_path), f)
+      output_zip.write(supersu_source, supersu_target)
 
 def WriteFullOTAPackage(input_zip, output_zip):
   # TODO: how to determine this?  We don't know what version it will
@@ -631,8 +637,29 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   script.Unmount("/data")
   script.AppendExtra("endif;")
 
+  builddate = GetBuildProp("ro.build.date", OPTIONS.info_dict);
+  releasetype = GetBuildProp("ro.sm.releasetype", OPTIONS.info_dict);
+
+  if OPTIONS.override_prop:
+    product = GetBuildProp("ro.build.product", OPTIONS.info_dict);
+  else:
+    device = GetBuildProp("ro.product.device", OPTIONS.info_dict);
+    model = GetBuildProp("ro.product.model", OPTIONS.info_dict);
+    product = "%s (%s)"%(model, device);
+ 
+  script.Print("******************************************");
+  script.Print("* SudaMod");
+  script.Print("*");
+  script.Print("* Release: %s"%(releasetype));
+  script.Print("* Build date: %s"%(builddate));
+  script.Print("* Device: %s"%(product));
+  script.Print("******************************************");
+
   if "selinux_fc" in OPTIONS.info_dict:
     WritePolicyConfig(OPTIONS.info_dict["selinux_fc"], output_zip)
+
+  if block_based:
+     script.Print("{*} Installing...")
 
   recovery_mount_options = OPTIONS.info_dict.get("recovery_mount_options")
 
@@ -649,13 +676,16 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
     system_diff = common.BlockDifference("system", system_tgt, src=None)
     system_diff.WriteScript(script, output_zip)
   else:
+    script.Print("{*} Formatting /system")
     script.FormatPartition("/system")
     script.Mount("/system", recovery_mount_options)
     if not has_recovery_patch:
       script.UnpackPackageDir("recovery", "/system")
+    script.Print("{*} Extracting /system")
     script.UnpackPackageDir("system", "/system")
 
     symlinks = CopyPartitionFiles(system_items, input_zip, output_zip)
+    script.Print("{*} Symlinking...")
     script.MakeSymlinks(symlinks)
 
   boot_img = common.GetBootableImage("boot.img", "boot.img",
@@ -669,6 +699,7 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
     common.MakeRecoveryPatch(OPTIONS.input_tmp, output_sink,
                              recovery_img, boot_img)
 
+    script.Print("{*} Setting permissions...")
     system_items.GetMetadata(input_zip)
     system_items.Get("system").SetPermissions(script)
 
@@ -698,16 +729,23 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   device_specific.FullOTA_PostValidate()
 
   if OPTIONS.backuptool:
+    script.Print("{*} Restoring backup")
     script.ShowProgress(0.02, 10)
     if block_based:
       script.Mount("/system")
     script.RunBackup("restore")
     if block_based:
       script.Unmount("/system")
-
+    
+  script.Print("{*} Flashing boot.img")
   script.ShowProgress(0.05, 5)
   script.WriteRawImage("/boot", "boot.img")
 
+  script.Print("{*} Flashing SuperSU Zip")
+  script.UnpackPackageDir("supersu", "/tmp/supersu");
+  script.AppendExtra("""run_program("/sbin/busybox", "unzip", "/tmp/supersu/UPDATE-SuperSU.zip", "META-INF/com/google/android/*", "-d", "/tmp/supersu");""");
+  script.AppendExtra("""run_program("/sbin/busybox", "sh", "/tmp/supersu/META-INF/com/google/android/update-binary", "dummy", "1", "/tmp/supersu/UPDATE-SuperSU.zip");""");
+  script.Print("{*} Enjoy SudaMod!")
   script.ShowProgress(0.2, 10)
   device_specific.FullOTA_InstallEnd()
 
@@ -738,7 +776,7 @@ endif;
   common.ZipWriteStr(output_zip, "system/build.prop",
                      ""+input_zip.read("SYSTEM/build.prop"))
 
-  common.ZipWriteStr(output_zip, "META-INF/org/cyanogenmod/releasekey",
+  common.ZipWriteStr(output_zip, "META-INF/org/sudamod/releasekey",
                      ""+input_zip.read("META/releasekey.txt"))
 
 def WritePolicyConfig(file_name, output_zip):
