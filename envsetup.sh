@@ -32,6 +32,7 @@ Invoke ". build/envsetup.sh" from your shell to add the following functions to y
 - repopick: Utility to fetch changes from Gerrit.
 - installboot: Installs a boot.img to the connected device.
 - installrecovery: Installs a recovery.img to the connected device.
+- update: ProjectControl.
 - mota:  Generate OTA packages.
 
 Look at the source to view more functions. The complete list is:
