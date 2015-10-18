@@ -29,7 +29,6 @@ PROJECTPATH=($ANDROID_BUILD_TOP/android
  $ANDROID_BUILD_TOP/packages/apps/DeskClock
  $ANDROID_BUILD_TOP/packages/apps/Dialer
  $ANDROID_BUILD_TOP/packages/apps/Eleven
- $ANDROID_BUILD_TOP/packages/apps/Mms
  $ANDROID_BUILD_TOP/packages/apps/LockClock
  $ANDROID_BUILD_TOP/packages/apps/InCallUI
  $ANDROID_BUILD_TOP/packages/apps/Settings
@@ -54,7 +53,6 @@ PROJECTLIST=(.git # ->android.git
  _packages_apps_DeskClock.git
  _packages_apps_Dialer.git
  _packages_apps_Eleven.git
- _packages_apps_Mms-caf.git
  _packages_apps_LockClock.git
  _packages_apps_InCallUI.git
  _packages_apps_Settings.git
