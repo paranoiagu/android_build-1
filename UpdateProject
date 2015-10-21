@@ -19,7 +19,6 @@
 PROJECTPATH=($ANDROID_BUILD_TOP/android
  $ANDROID_BUILD_TOP/build
  $ANDROID_BUILD_TOP/frameworks/base
- $ANDROID_BUILD_TOP/frameworks/av
  $ANDROID_BUILD_TOP/packages/apps/Browser
  $ANDROID_BUILD_TOP/packages/apps/Calendar
  $ANDROID_BUILD_TOP/packages/apps/CellBroadcastReceiver
@@ -43,7 +42,6 @@ PROJECTPATH=($ANDROID_BUILD_TOP/android
 PROJECTLIST=(.git # ->android.git
  _build.git
  _frameworks_base.git
- _frameworks_av.git
  _packages_apps_Browser.git
  _packages_apps_Calendar.git
  _packages_apps_CellBroadcastReceiver.git
