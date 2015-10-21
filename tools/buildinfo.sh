@@ -40,9 +40,6 @@ echo "ro.product.manufacturer=$PRODUCT_MANUFACTURER"
 if [ -n "$PRODUCT_DEFAULT_LOCALE" ] ; then
   echo "ro.product.locale=$PRODUCT_DEFAULT_LOCALE"
 fi
-echo "persist.sys.language=$PRODUCT_DEFAULT_LANGUAGE"
-echo "persist.sys.country=$PRODUCT_DEFAULT_REGION"
-echo "persist.sys.timezone=Asia/Shanghai"
 echo "ro.wifi.channels=$PRODUCT_DEFAULT_WIFI_CHANNELS"
 echo "ro.board.platform=$TARGET_BOARD_PLATFORM"
 
