@@ -2358,22 +2358,6 @@ function mk_timer()
     return $ret
 }
 
-<<<<<<< HEAD
-function chromium_prebuilt() {
-    T=$(gettop)
-    hash1=$T/prebuilts/chromium/$SM_BUILD/hash_chromium.txt
-    hash2=$T/prebuilts/chromium/$SM_BUILD/hash_webview.txt
-
-    if [ -r $hash1 ] && [ -r $hash2 ] && [ $(git --git-dir=$T/external/chromium_org/.git --work-tree=$T/external/chromium_org rev-parse --verify HEAD) == $(cat $hash1) ] &&
-    [ $(git --git-dir=$T/frameworks/webview/.git --work-tree=$T/frameworks/webview rev-parse --verify HEAD) == $(cat $hash2) ]; then
-        export PRODUCT_PREBUILT_WEBVIEWCHROMIUM=yes
-        echo "** Prebuilt Chromium is up-to-date; Will be used for build **"
-    else
-        export PRODUCT_PREBUILT_WEBVIEWCHROMIUM=no
-        echo "** Prebuilt Chromium out-of-date/not found; Will build from source **"
-    fi
-}
-
 function make()
 {
     mk_timer $(get_make_command) "$@"

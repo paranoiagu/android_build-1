@@ -1860,14 +1860,6 @@ bacon: otapackage
 	$(hide) $(MD5SUM) $(SM_TARGET_PACKAGE) > $(SM_TARGET_PACKAGE).md5sum
 	@echo -e ${CL_CYN}"Package Complete: $(SM_TARGET_PACKAGE)"${CL_RST}
 
-<<<<<<< HEAD
-ifeq ($(USE_PREBUILT_CHROMIUM),1)
-ifneq ($(PRODUCT_PREBUILT_WEBVIEWCHROMIUM),yes)
-	@echo "Running Chromium prebuilt setup script..."
-	$(hide) . $(TOPDIR)build/tools/chromium_prebuilt.sh $(TOP)
-endif
-endif
-
 # -----------------------------------------------------------------
 # The factory package
 
