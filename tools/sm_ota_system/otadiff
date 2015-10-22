@@ -29,11 +29,11 @@ libart-disassembler.so
 libsigchain.so"
 
 if [ -z "$BSDIFF" ];then
-	BSDIFF=$ANDROID_BUILD_TOP/build/tools/sm_ota_system/bsdiff
+	BSDIFF=$ANDROID_BUILD_TOP/out/host/linux-x86/bin/bsdiff
 fi
 
 if [ -z "$IMGDIFF" ];then
-	IMGDIFF=$ANDROID_BUILD_TOP/build/tools/sm_ota_system/imgdiff
+	IMGDIFF=$ANDROID_BUILD_TOP/out/host/linux-x86/bin/imgdiff
 fi
 
 gen_diff(){
