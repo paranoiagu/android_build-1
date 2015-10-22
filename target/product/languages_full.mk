@@ -22,4 +22,4 @@
 # These are all the locales that have translations and are displayable
 # by TextView in this branch.
 # SudaMod
-PRODUCT_LOCALES := en_US zh_CN zh_TW
+PRODUCT_LOCALES := en_US zh_CN zh_TW zh_HK
