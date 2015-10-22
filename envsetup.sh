@@ -664,13 +664,6 @@ function lunch()
 
     echo
 
-    if [[ $USE_PREBUILT_CHROMIUM -eq 1 ]]; then
-        chromium_prebuilt
-    else
-        # Unset flag in case user opts out later on
-        export PRODUCT_PREBUILT_WEBVIEWCHROMIUM=""
-    fi
-
     fixup_common_out_dir
 
     set_stuff_for_environment
@@ -2365,6 +2358,7 @@ function mk_timer()
     return $ret
 }
 
+<<<<<<< HEAD
 function chromium_prebuilt() {
     T=$(gettop)
     hash1=$T/prebuilts/chromium/$SM_BUILD/hash_chromium.txt
