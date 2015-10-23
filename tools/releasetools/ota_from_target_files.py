@@ -550,8 +550,9 @@ def WriteFullOTAPackage(input_zip, output_zip):
       metadata=metadata,
       info_dict=OPTIONS.info_dict)
 
-  has_recovery_patch = HasRecoveryPatch(input_zip)
-  block_based = OPTIONS.block_based and has_recovery_patch
+  #has_recovery_patch = HasRecoveryPatch(input_zip)
+  has_recovery_patch = True
+  block_based = OPTIONS.block_based
 
   #if not OPTIONS.omit_prereq:
   #  ts = GetBuildProp("ro.build.date.utc", OPTIONS.info_dict)
@@ -692,8 +693,8 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
       common.ZipWriteStr(output_zip, "recovery/" + fn, data)
       system_items.Get("system/" + fn)
 
-    common.MakeRecoveryPatch(OPTIONS.input_tmp, output_sink,
-                             recovery_img, boot_img)
+    #common.MakeRecoveryPatch(OPTIONS.input_tmp, output_sink,
+    #                         recovery_img, boot_img)
 
     script.Print("{*} Setting permissions...")
     system_items.GetMetadata(input_zip)
