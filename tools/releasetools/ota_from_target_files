@@ -729,9 +729,9 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   script.WriteRawImage("/boot", "boot.img")
 
   script.Print("{*} Flashing SuperSU Zip")
-  script.UnpackPackageDir("supersu", "/tmp/supersu");
-  script.AppendExtra("""run_program("/sbin/busybox", "unzip", "/tmp/supersu/UPDATE-SuperSU.zip", "META-INF/com/google/android/*", "-d", "/tmp/supersu");""");
-  script.AppendExtra("""run_program("/sbin/busybox", "sh", "/tmp/supersu/META-INF/com/google/android/update-binary", "dummy", "1", "/tmp/supersu/UPDATE-SuperSU.zip");""");
+  script.UnpackPackageDir("supersu", "/tmp/supersu")
+  script.AppendExtra("""run_program("/sbin/busybox", "unzip", "/tmp/supersu/UPDATE-SuperSU.zip", "META-INF/com/google/android/*", "-d", "/tmp/supersu");""")
+  script.AppendExtra("""run_program("/sbin/busybox", "sh", "/tmp/supersu/META-INF/com/google/android/update-binary", "dummy", "1", "/tmp/supersu/UPDATE-SuperSU.zip");""")
   script.Print("{*} Enjoy SudaMod!")
   script.ShowProgress(0.2, 10)
   device_specific.FullOTA_InstallEnd()
