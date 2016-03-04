@@ -909,7 +909,7 @@ function mmm()
         local DIR TO_CHOP
         local GET_INSTALL_PATH=
 
-        if [ "$(__detect_shell)" == "zsh" ]; then
+        if [ "$(__detect_shell)" = "zsh" ]; then
             set -lA DASH_ARGS $(echo "$@" | awk -v RS=" " -v ORS=" " '/^-.*$/')
             set -lA DIRS $(echo "$@" | awk -v RS=" " -v ORS=" " '/^[^-].*$/')
         else
@@ -979,7 +979,7 @@ function mmma()
   local T=$(gettop)
   local DRV=$(getdriver $T)
   if [ "$T" ]; then
-    if [ "$(__detect_shell)" == "zsh" ]; then
+    if [ "$(__detect_shell)" = "zsh" ]; then
         set -lA DASH_ARGS $(echo "$@" | awk -v RS=" " -v ORS=" " '/^-.*$/')
         set -lA DIRS $(echo "$@" | awk -v RS=" " -v ORS=" " '/^[^-].*$/')
     else
@@ -1839,7 +1839,7 @@ function makerecipe() {
 
   repo forall -c '
 
-  if [ "$REPO_REMOTE" == "github" ]
+  if [ "$REPO_REMOTE" = "github" ]
   then
     pwd
     cmremote
@@ -1850,7 +1850,7 @@ function makerecipe() {
 
 function cmgerrit() {
 
-    if [ "$(__detect_shell)" == "zsh" ]; then
+    if [ "$(__detect_shell)" = "zsh" ]; then
         # zsh does not define FUNCNAME, derive from funcstack
         local FUNCNAME=$funcstack[1]
     fi
@@ -2245,7 +2245,7 @@ function dopush()
         echo "Device Found."
     fi
 
-    if (adb shell cat /system/build.prop | grep -q "ro.sm.device=$SM_BUILD") || [ "$FORCE_PUSH" == "true" ];
+    if (adb shell getprop ro.sm.device | grep -q "$SM_BUILD") || [ "$FORCE_PUSH" = "true" ];
     then
     # retrieve IP and PORT info if we're using a TCP connection
     TCPIPPORT=$(adb devices | egrep '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+:[0-9]+[^0-9]+' \
