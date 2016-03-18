@@ -248,6 +248,8 @@ function setpaths()
     # needed for building linux on MacOS
     # TODO: fix the path
     #export HOST_EXTRACFLAGS="-I "$T/system/kernel_headers/host_include
+
+    export SM_CPU_ABI=$(get_build_var TARGET_CPU_ABI)
 }
 
 function printconfig()
