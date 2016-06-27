@@ -656,7 +656,7 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   releasetype = GetBuildProp("ro.sm.releasetype", OPTIONS.info_dict);
 
   if OPTIONS.override_prop:
-    product = GetBuildProp("ro.build.product", OPTIONS.info_dict);
+    product = GetBuildProp("ro.sm.device", OPTIONS.info_dict);
   else:
     device = GetBuildProp("ro.product.device", OPTIONS.info_dict);
     model = GetBuildProp("ro.product.model", OPTIONS.info_dict);
